@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Projects | Aayan Islam</title>
+  
+  <link rel="icon" type="image/png" href="Images/Logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="stylesplit.css">
+</head>
+<body>
+
+  <header id="navbar">
+    <div class="nav-container">
+      <a href="indexsplit.html" class="logo">AAYAN<span>.ISLAM</span></a>
+      <button class="hamburger" id="menu-toggle" aria-label="Toggle navigation menu">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-links" id="nav-menu">
+        <li><a href="indexsplit.html" class="nav-link">Home</a></li>
+        <li><a href="experiencesplit.html" class="nav-link">Experience</a></li>
+        <li><a href="educationsplit.html" class="nav-link">Education</a></li>
+        <li><a href="projectssplit.html" class="nav-link active">Projects</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <section class="revealpage">
+    <h2 class="section-title">Projects</h2>
+    
+    <div class="tab-switcher">
+      <button class="tab-btn active" id="tab-university">University Projects</button>
+      <button class="tab-btn" id="tab-personal">Personal Projects</button>
+    </div>
+
+    <div id="university-panel" class="projects-grid project-panel active">
+      <!-- Generated dynamically -->
+    </div>
+
+    <div id="personal-panel" class="projects-grid project-panel">
+      <!-- Generated dynamically -->
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-content">
+      <div class="copyright">
+        &copy; 2026 Aayan Islam. Technical Repositories Showcase.
+      </div>
+    </div>
+  </footer>
+
+  <!-- MEDIA ENHANCED BUBBLE TARGET -->
+  <div class="modal-backdrop" id="bubble-modal">
+    <div class="modal-wrapper">
+      <button class="modal-close-btn" id="modal-close-trigger">✕</button>
+      <h3 class="modal-title" id="modal-title">Project Details</h3>
+      <div class="modal-subtitle" id="modal-subtitle">Sub header info</div>
+      <div class="modal-body" id="modal-body"></div>
+      <div class="modal-tags" id="modal-tags"></div>
+    </div>
+  </div>
+
+  <script src="appsplit.js"></script>
+</body>
+</html>
