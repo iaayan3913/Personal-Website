@@ -312,8 +312,7 @@ const DATA = {
             studies with Vectorize and Athena Intelligence show how real-time inference is transform-
             ing both customer-facing experiences and enterprise analytics.</p>
             <p>Ultimately, the findings
-            suggest that latency is not merely a technical performance metric, but a strategic dimen-
-            sion of AI adoption—central to building trust, improving engagement, and establishing
+            suggest that latency is not merely a technical performance metric, but a strategic dimension of AI adoption—central to building trust, improving engagement, and establishing
             competitive advantage.</p>
             <p>I was lucky to be 1 of 3 students selected to pick out a topic and write about it as part of Anecdote's rebranding to become Clarity</p>
         `
