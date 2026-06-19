@@ -365,7 +365,6 @@ const DATA = {
           </ul>
           <p>To look at all the code used for the challenge, check out the <a href="https://github.com/EdwinIsCoding/Boxonwils" target="_blank" style="color: var(--primary-accent); text-decoration: underline; font-weight: 500;">Boxonwils GitHub Repository</a></p>
           <p>To see images of previous prototypes, check out my Boxonwils project on <a href="https://linkedin.com/in/aayanislam" target="_blank" style="color: var(--secondary-accent); font-weight: 500;">LinkedIn</a>.</p>
-          <p><strong>Technical Write-up:</strong> You can <a href="Reports/Yr1_Term3_Robotics_Challenge.pdf" target="_blank" style="color: var(--primary-accent); text-decoration: underline; font-weight: 500;">read the full project report here</a>.</p>
         `
       },
       {
