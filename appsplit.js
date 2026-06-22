@@ -462,7 +462,7 @@ const DATA = {
         grade: "Robotics",
         description: "A wireless control robot that allows you to see through its eyes",
         tags: ["Robotics", "Arduino","Wireless control"],
-        images: [],
+        images: ["Images/FPV_car.jpeg","Images/FPVcar1.mp4","Images/FPVcar2.mp4"],
         detailedDescription: `
         <p>WORK IN PROGRESS </p>
         <p><strong>Open Source Code:</strong> You can <a href="FILLER LINK" target="_blank" style="color: var(--primary-accent); text-decoration: underline; font-weight: 500;">find the repository here</a>.</p>
