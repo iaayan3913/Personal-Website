@@ -462,10 +462,16 @@ const DATA = {
         grade: "Robotics",
         description: "A wireless control robot that allows you to see through its eyes",
         tags: ["Robotics", "Arduino","Wireless control"],
-        images: ["Images/FPV_car.jpeg","Images/FPVcar1.mp4","Images/FPVcar2.mp4"],
+        images: ["Images/FPV_car.jpeg","Images/FPV_drive.mp4","Images/FPVcar2.mp4"],
         detailedDescription: `
-        <p>WORK IN PROGRESS </p>
-        <p><strong>Open Source Code:</strong> You can <a href="FILLER LINK" target="_blank" style="color: var(--primary-accent); text-decoration: underline; font-weight: 500;">find the repository here</a>.</p>
+        <p>Designed, modeled, and constructed a fully wireless, low-latency First-Person View (FPV) mobile robot. The system integrates a dual-motor drivetrain with real-time network streaming and decentralized control architectures. By shifting computational heavy-lifting to a host machine, the vehicle functions as an agile edge device ready for future advancements.</p>
+        <ul>
+            <li><strong>Dual-Core Control Stack:</strong> Features an <em>Arduino Nano ESP32</em> running embedded C++ to manage local pin routing, handling multi-channel PWM speed commands and direction state matrices seamlessly.</li>
+            <li><strong>Low-Latency Network Engine:</strong> Utilizes high-speed, asynchronous <strong>UDP Socket Communication</strong> on port 9999 to stream continuous control vectors from a laptop interface, reducing execution lag.</li>
+            <li><strong>Integrated FPV Cockpit:</strong> Developed a unified Python cockpit leveraging <em>Pygame</em> and <em>OpenCV</em> to simultaneously decode a live network video feed from an onboard smartphone device while tracking continuous keyboard inputs.</li>
+            <li><strong>High-Efficiency Power Stage:</strong> Made use of a <em>TB6612FNG</em> H-Bridge driver powered by a stable 9.6V battery configuration, maximizing motor torque curves while preserving logic safety thresholds.</li>
+        </ul>
+        <p><strong>Open Source Code:</strong> You can <a href="https://github.com/iaayan3913/FPV-robot/tree/main" target="_blank" style="color: var(--primary-accent); text-decoration: underline; font-weight: 500;">find the repository here</a>.</p>
 
         `
       },
