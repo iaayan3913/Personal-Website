@@ -80,6 +80,16 @@ const DATA = {
       roles: [
         // potentially intern question mark. soon come 
         {
+          title: "Development Teleoperations Intern",
+          startDate: "Jul 2026",
+          endDate: "Sep 2026",
+          bullets: [
+            "Carried out Raas operations as a teleoperator to ensure consistency and high success rates",
+            "Worked in teams of 2 to ensure smooth handover and effective teleoperation over a long period of time",
+            "Displayed over 200 successful grasps during a live demo event with Google DeepMind"
+          ],
+        },
+        {
           title: "Industry Placement Student",
           startDate: "Feb 2026",
           endDate: "Jun 2026",
@@ -264,6 +274,22 @@ const DATA = {
       }
     ],
     industry: [
+      {
+        id: "edu-extend",
+        monogram: "ER",
+        title: "Development Teleoperating Intern",
+        institution: "Extend Robotics",
+        dates: "Jul 2026 – Sep 2026",
+        grade: "Active Track",
+        tags: ["On-Site", "Reading", "Teleoperation"],
+        images: ["Images/Apple_Picking.mp4","Images/Gilbert.mp4"], //insert images of gilbert and maybe me n yash
+        bubbleContent: `
+          <p>The aim of this internship was to showcase the importance and use of robots as a service. This involved teleoperating the robot from a remote location to carry out the desired task of picking defective apples on a conveyer line.</p>
+          <p>I have carried out over 500 grasps as a teleoperator to showcase the use of teleoperated robots in the field. Additionally, I have been able to highlight constraints and singularities in the setup which has lead to changes and improvements to increase efficiency and also increase operator reliability.</p>
+          <p>An achievement from this that I am very proud of was achiving 178 successful grasps out of 183 attempts. This comes out to a failure rate of only 2.7% </p>
+          <p> For further development, we started working on collection with both arms at the same time as well as gathering metrics to develop an autonomous system</p>
+        `
+      },
       {
         id: "edu-extend",
         monogram: "ER",
