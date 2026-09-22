@@ -292,7 +292,7 @@ const DATA = {
       },
       {
         id: "edu-extend-IXN",
-        monogram: "ERIXN",
+        monogram: "ER",
         title: "IXN Robotics Engineering Project",
         institution: "Extend Robotics",
         dates: "Feb 2026 – Jun 2026",
