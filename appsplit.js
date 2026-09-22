@@ -275,7 +275,7 @@ const DATA = {
     ],
     industry: [
       {
-        id: "edu-extend",
+        id: "edu-extend-intern",
         monogram: "ER",
         title: "Development Teleoperating Intern",
         institution: "Extend Robotics",
@@ -291,8 +291,8 @@ const DATA = {
         `
       },
       {
-        id: "edu-extend",
-        monogram: "ER",
+        id: "edu-extend-IXN",
+        monogram: "ERIXN",
         title: "Robotics Engineering Intern",
         institution: "Extend Robotics",
         dates: "Feb 2026 – Jun 2026",
