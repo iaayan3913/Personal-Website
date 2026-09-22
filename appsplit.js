@@ -293,11 +293,11 @@ const DATA = {
       {
         id: "edu-extend-IXN",
         monogram: "ERIXN",
-        title: "Robotics Engineering Intern",
+        title: "IXN Robotics Engineering Project",
         institution: "Extend Robotics",
         dates: "Feb 2026 – Jun 2026",
         grade: "Active Track",
-        tags: ["On-Site", "Reading", "Teleoperation", "Vision Language Action models"],
+        tags: ["On-Site", "Reading", "VLA Models"],
         images: ["Images/ERdatagetheringclip.mp4","Images/ERdatavalidation.mp4","Images/ERvla.mp4","Images/ERdataGathering.jpeg"],
         bubbleContent: `
         <p>The scope of this project involved training a VLA model to be able to carry out pick and place tasks autonomously. This was done by tele-operating a xArm7 by using Extend Robotics own software called AMAS. This enabled us to control a digital "twin" of the robot arm and move it around.</p>
