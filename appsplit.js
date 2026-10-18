@@ -198,8 +198,8 @@ const DATA = {
         title: "MEng Robotics & Artificial Intelligence",
         institution: "University College London",
         dates: "2024 – 2028 (Ongoing)",
-        grade: "Current Standing: 82%",
-        tags: ["Year 1 First", "Robotics & AI"],
+        grade: "Current Standing: 79%",
+        tags: ["Year 1 First","Year 2 First" ,"Robotics & AI"],
         bubbleContent: `
           <p><strong>Current Standing:</strong> 82% average throughout the first academic cycle.</p>
           <p>Notable coursework & project modules:</p>
@@ -282,11 +282,11 @@ const DATA = {
         dates: "Jul 2026 – Sep 2026",
         grade: "Active Track",
         tags: ["On-Site", "Reading", "Teleoperation"],
-        images: ["Images/Apple_Picking.mp4","Images/Gilbert.mp4"], //insert images of gilbert and maybe me n yash
+        images: ["Images/Apple_Picking.mp4","Images/VRview.jpeg" ,"Images/Gilbert.mp4"], //insert images of gilbert and maybe me n yash
         bubbleContent: `
           <p>The aim of this internship was to showcase the importance and use of robots as a service. This involved teleoperating the robot from a remote location to carry out the desired task of picking defective apples on a conveyer line.</p>
           <p>I have carried out over 500 grasps as a teleoperator to showcase the use of teleoperated robots in the field. Additionally, I have been able to highlight constraints and singularities in the setup which has lead to changes and improvements to increase efficiency and also increase operator reliability.</p>
-          <p>An achievement from this that I am very proud of was achiving 178 successful grasps out of 183 attempts. This comes out to a failure rate of only 2.7% </p>
+          <p>An achievement from this that I am very proud of was achiving 178 successful grasps out of 183 attempts while demonstrating to the Google DeepMind team. This comes out to a failure rate of only 2.7% </p>
           <p> For further development, we started working on collection with both arms at the same time as well as gathering metrics to develop an autonomous system</p>
         `
       },
@@ -481,6 +481,46 @@ const DATA = {
       }
     ],
     personal: [
+      {
+        id: "proj-papercut",
+        name: "PaperCut",
+        category: "Hackathon Build",
+        grade: "AI Web App",
+        description: "Collaborative AI research platform turning literature reviews into an interactive swipe deck.",
+        tags: ["Next.js", "Supabase", "Claude Sonnet", "OpenAlex API", "TypeScript"],
+        images: ["Images/PaperCut1.png", "Images/PaperCut2.png", "Images/PaperCut3.png","Images/PaperCut4.mp4"], // Add your screenshots here, e.g. ["Images/papercut1.png"]
+        detailedDescription: `
+          <p><strong>Eliminate the stress of literature reviews.</strong></p>
+          <p>PaperCut is an AI-powered collaborative research platform that transforms academic paper discovery into a real-time, gesture-driven swipe deck. Built with Next.js and Supabase, the platform ingests a project brief and automatically queries OpenAlex and Semantic Scholar to curate relevant literature.</p>
+          <p>We integrated Anthropic's Claude Sonnet to critically evaluate each paper against the user's specific project brief, generating automated stance chips, source credibility badges, and cross-paper relationship maps.</p>
+          <ul>Key Features & Tech Stack:
+            <li><strong>Frontend & Backend:</strong> Next.js (App Router), TypeScript, Tailwind CSS, and Supabase (Realtime presence & group reading lists)</li>
+            <li><strong>AI Engine:</strong> Claude Sonnet for brief context extraction, paper relevance evaluation, and literature review outlining</li>
+            <li><strong>Academic Search:</strong> Merged citation and metadata pipelines from OpenAlex and Semantic Scholar APIs</li>
+            <li><strong>Export Pipeline:</strong> Instant one-click export of curated libraries to BibTeX, LaTeX, Markdown, or CSV</li>
+            <li> Implemented accessibility features to ensure usability to a wider audience
+          </ul>
+          <p><strong>Open Source Code:</strong> You can <a href="https://github.com/ItzSmudge/claude-hacky" target="_blank" style="color: var(--primary-accent); text-decoration: underline; font-weight: 500;">find the repository here</a>.</p>
+        `
+      },
+      {
+        id: "proj-AceIt",
+        name: "AceIt! Interview Agent",
+        category: "Google Hackathon",
+        grade: "3rd place",
+        description: "Real-time AI technical interview prep agent evaluating live code and speech.",
+        tags: ["Gemini Flash", "Gemini Omni", "Real-Time AI", "Python"],
+        images: ["Images/AceIt.png" , "Images/ThirdPlace.jpeg"],
+        detailedDescription: `
+          <p>Developed at the Google Hackathon in London, where I was selected among the top 50 participants from an applicant pool of over 900+ candidates (5.5% acceptance rate).</p>
+          <p>We built <strong>AceIt!</strong>, an interactive AI technical interview preparation agent that simulates high-pressure software and engineering interviews in real time.</p>
+          <ul>Key Highlights:
+            <li><strong>Multimodal Evaluation:</strong> Leverages Google's Gemini Flash and Gemini Omni models to simultaneously analyse live code execution and spoken technical explanations in real time.</li>
+            <li><strong>Instant Feedback Loop:</strong> Provides low-latency conversational hints, complexity analysis, and communication scoring to help candidates refine both their algorithmic thinking and vocal delivery.</li>
+            <li><strong>Competition Result:</strong> Placed <strong>3rd overall</strong> out of 10 finalist teams judged by Google engineers.</li>
+          </ul>
+        `
+      },
       {
         id: "proj-FPV",
         name: "FPV Wireless Robot",
