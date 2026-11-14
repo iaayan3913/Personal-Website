@@ -17,6 +17,7 @@ A multi-page portfolio engineered to showcase academic developments, research mi
 ├── Images/                 # Media repository holding profile photos and clip loops
 │   └── thumbs/             # Web-sized copies + video posters (run tools/make_thumbs.py after adding media)
 ├── tools/make_thumbs.py    # Regenerates Images/thumbs/
+├── tools/compress_videos.py # Re-encodes Images/*.mp4 for the web (run after adding a video)
 ├── Logos/                  # All company logos used 
 └── Reports/                # Technical write-ups and PDF academic research reports
 ```
