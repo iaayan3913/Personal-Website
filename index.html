@@ -4,24 +4,26 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Aayan Islam | Portfolio</title>
-  
+  <meta name="description" content="Aayan Islam — Software & Robotics Engineer · MEng Robotics & AI @ UCL">
+  <meta name="theme-color" content="#0A0C0B">
+
   <link rel="icon" type="image/png" href="Images/Logo.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-  
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=DM+Sans:opsz,wght@9..40,300..700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
   <link rel="stylesheet" href="stylesplit.css">
 </head>
 <body>
 
   <header id="navbar">
     <div class="nav-container">
-      <a href="index.html" class="logo">AAYAN<span>.ISLAM</span></a>
-      <button class="hamburger" id="menu-toggle" aria-label="Toggle navigation menu">
+      <a href="index.html" class="logo"><img src="Images/thumbs/Logo.jpg" alt="" class="logo-mark" width="34" height="34">AAYAN<span>.ISLAM</span></a>
+      <button class="hamburger" id="menu-toggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="nav-menu">
         <span></span><span></span><span></span>
       </button>
       <ul class="nav-links" id="nav-menu">
-        <li><a href="index.html" class="nav-link active">Home</a></li>
+        <li><a href="index.html" class="nav-link active" aria-current="page">Home</a></li>
         <li><a href="experiencesplit.html" class="nav-link">Experience</a></li>
         <li><a href="educationsplit.html" class="nav-link">Education</a></li>
         <li><a href="projectssplit.html" class="nav-link">Projects</a></li>
@@ -29,6 +31,7 @@
     </div>
   </header>
 
+  <main>
   <section id="home">
     <div class="hero-grid">
       <div class="hero-left">
@@ -38,7 +41,7 @@
         <p class="bio">I bridge the gap between AI and physical systems. As a Robotics & AI student at UCL (82% 1st Yr), I have taken part in building autonomous pipelines—from training Vision-Language-Action (VLA) models for robotic manipulation to engineering real-time control algorithms and physics simulations. Backed by industry experience in teleoperation, nuclear robotics, and AI trust research, I build intelligent systems engineered for the physical world.</p>
         <!-- Non technical paragraph-->
         <p class = "bio">Beyond engineering, I am deeply committed to community impact and leadership. Over the past two years, I have worked my way up at Friends Of Bright Eyes—a charity dedicated to supporting children with various disabilities—progressing from a volunteer to a senior social care worker, a lead session planner, and ultimately into a Supervisor role. In this position, I manage critical on-site operations: keeping center environments entirely risk-free, orchestrating registers and payments, and acting as the primary communication link between the charity and the families we serve.</p>
-        
+
         <div class="social-strip">
           <a href="mailto:iaayan3@gmail.com">iaayan3@gmail.com</a>
           <a href="https://linkedin.com/in/aayanislam" target="_blank" rel="noopener">LinkedIn</a>
@@ -48,16 +51,52 @@
       <div class="hero-right">
         <!-- Dynamic Picture Slide Showcase Frame -->
         <div class="hero-slideshow-container">
-          <img src="Images/Inetec & Zero Gravity Day-13.jpg" alt="Aayan Islam - Technical Profile" class="hero-slide active">
-          <img src="Images/Medvedncia_069.jpg" alt="Aayan Islam - Laboratory Track" class="hero-slide">
-          <img src="Images/Bart_dev.jpg" alt="Aayan Islam - Project Engineering" class="hero-slide">
-          <img src="Images/Inetec_uniform.jpg" alt="Aayan Islam - Project Engineering" class="hero-slide">
-          <img src="Images/Medvedncia_193.jpg" alt="Aayan Islam - Project Engineering" class="hero-slide">
-          <img src="Images/ER_bio.jpeg" alt="Aayan Islam - Project Engineering" class="hero-slide">
-          <img src="Images/Fobe_Social_Club.jpg" alt="Aayan Islam - Project Engineering" class="hero-slide">
-          <img src="Images/LoveLutonMarathon.jpg" alt="Aayan Islam - Project Engineering" class="hero-slide">
+          <figure class="hero-slide active">
+            <img src="Images/thumbs/Inetec%20&amp;%20Zero%20Gravity%20Day-13.jpg" alt="" aria-hidden="true" class="hero-slide-bg">
+            <img src="Images/thumbs/Inetec%20&amp;%20Zero%20Gravity%20Day-13.jpg" alt="Aayan Islam - Technical Profile" class="hero-slide-img">
+          </figure>
+          <figure class="hero-slide">
+            <img src="Images/thumbs/Medvedncia_069.jpg" alt="" aria-hidden="true" class="hero-slide-bg">
+            <img src="Images/thumbs/Medvedncia_069.jpg" alt="Aayan Islam - Laboratory Track" class="hero-slide-img">
+          </figure>
+          <figure class="hero-slide">
+            <img src="Images/thumbs/Bart_dev.jpg" alt="" aria-hidden="true" class="hero-slide-bg">
+            <img src="Images/thumbs/Bart_dev.jpg" alt="Aayan Islam - Project Engineering" class="hero-slide-img">
+          </figure>
+          <figure class="hero-slide">
+            <img src="Images/thumbs/Inetec_uniform.jpg" alt="" aria-hidden="true" class="hero-slide-bg">
+            <img src="Images/thumbs/Inetec_uniform.jpg" alt="Aayan Islam - Project Engineering" class="hero-slide-img">
+          </figure>
+          <figure class="hero-slide">
+            <img src="Images/thumbs/Medvedncia_193.jpg" alt="" aria-hidden="true" class="hero-slide-bg">
+            <img src="Images/thumbs/Medvedncia_193.jpg" alt="Aayan Islam - Project Engineering" class="hero-slide-img">
+          </figure>
+          <figure class="hero-slide">
+            <img src="Images/thumbs/ER_bio.jpg" alt="" aria-hidden="true" class="hero-slide-bg">
+            <img src="Images/thumbs/ER_bio.jpg" alt="Aayan Islam - Project Engineering" class="hero-slide-img">
+          </figure>
+          <figure class="hero-slide">
+            <img src="Images/thumbs/Fobe_Social_Club.jpg" alt="" aria-hidden="true" class="hero-slide-bg">
+            <img src="Images/thumbs/Fobe_Social_Club.jpg" alt="Aayan Islam - Project Engineering" class="hero-slide-img">
+          </figure>
+          <figure class="hero-slide">
+            <img src="Images/thumbs/LoveLutonMarathon.jpg" alt="" aria-hidden="true" class="hero-slide-bg">
+            <img src="Images/thumbs/LoveLutonMarathon.jpg" alt="Aayan Islam - Project Engineering" class="hero-slide-img">
+          </figure>
         </div>
-        <div id="ticker-text">ROBOTICS</div>
+        <div class="hero-caption">
+          <div id="ticker-text">ROBOTICS</div>
+          <div id="slide-counter" aria-hidden="true"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Live cart-pole simulation (see setupPendulum in appsplit.js) -->
+    <div class="pendulum-strip">
+      <canvas id="pendulum-canvas" aria-label="Interactive inverted pendulum balanced by a live controller"></canvas>
+      <div class="pendulum-meta">
+        <span>Inverted pendulum · move to steer · click to disturb</span>
+        <span id="pendulum-readout"></span>
       </div>
     </div>
 
@@ -81,6 +120,17 @@
     </div>
   </section>
 
+  <section class="featured-section">
+    <div class="section-head">
+      <h2 class="section-title">Projects</h2>
+      <a href="projectssplit.html" class="section-link">All projects <span aria-hidden="true">→</span></a>
+    </div>
+    <div class="projects-grid" id="featured-grid">
+      <!-- Generated dynamically -->
+    </div>
+  </section>
+  </main>
+
   <footer>
     <div class="footer-content">
       <div class="badge-strip-title">Surfaced Achievements & Badges</div>
@@ -93,6 +143,7 @@
         <span class="badge-item">💻 Top 5% A-Level Computer Science (2024)</span>
         <span class="badge-item">🎮 Tank Assault — 70/70</span>
         <span class="badge-item">🥉 Google Student AI Hackathon - 3rd place</span>
+        <span class="badge-item">🥈 NVIDIA Hack for Impact - 2nd place</span>
       </div>
       <div class="copyright">
         &copy; 2026 Aayan Islam.
