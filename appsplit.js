@@ -725,22 +725,44 @@ function calculateDurationText(startStr, endStr) {
 // Projects surfaced on the home page (ids from DATA.projects)
 const FEATURED_PROJECT_IDS = ["proj-homeshield", "proj-hearme", "proj-papercut"];
 
+// Contact details used by the footer and the command palette
+const CONTACT = {
+  email: "iaayan3@gmail.com",
+  linkedin: "https://linkedin.com/in/aayanislam",
+  github: "https://github.com/iaayan3913",
+  cv: "Reports/Islam_Aayan_CV.pdf",
+  location: "Luton, UK",
+  timeZone: "Europe/London"
+};
+
+const REDUCE_MOTION = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const FINE_POINTER = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+
 document.addEventListener("DOMContentLoaded", () => {
   // Target hooks check page existence prior to appending loops
   if (document.getElementById("experience-timeline")) renderExperience();
   if (document.getElementById("formal-edu-grid")) renderEducation();
   if (document.getElementById("university-panel")) renderProjects();
   if (document.getElementById("featured-grid")) renderFeatured();
+  renderFooterContact();
 
   setupStickyNav();
   setupMobileMenu();
+  setupCommandPalette();
   if (document.getElementById("tab-university")) setupTabSwitchers();
   if (document.getElementById("bubble-modal")) {
     setupModalListeners();
     openModalFromHash();
+    window.addEventListener("hashchange", openModalFromHash);
   }
   if (document.getElementById("ticker-text")) startKeywordTicker();
   if (document.getElementById("pendulum-canvas")) setupPendulum();
+  if (document.getElementById("experience-timeline")) setupTimelineProgress();
+  setupPointerEffects();
+  setupCardPreviews();
+  setupCounters();
+  setupMarquee();
+  setupScramble();
   setupPageFadeIns();
   setupScrollReveal();
 });
@@ -765,6 +787,17 @@ function pickCover(item) {
   return images.find(src => !isVideo(src)) || images[0] || null;
 }
 
+// The clip a card plays on hover: its cover if that is a video, else its first video
+function pickPreview(item) {
+  if (item.cover && isVideo(item.cover)) return item.cover;
+  return (item.images || []).find(isVideo) || null;
+}
+
+function previewAttr(item) {
+  const clip = pickPreview(item);
+  return clip ? ` data-preview="${encodeURI(clip)}"` : "";
+}
+
 function getLogoMarkup(monogramString) {
   const imageHref = ASSET_LOGOS[monogramString];
   if (imageHref && imageHref.trim() !== "") {
@@ -779,9 +812,9 @@ function getLogoMarkup(monogramString) {
 function renderExperience() {
   const container = document.getElementById("experience-timeline");
   container.innerHTML = DATA.experience.map(item => `
-    <div class="timeline-item reveal">
+    <div class="timeline-item reveal" id="${item.id}">
       <div class="timeline-dot main-company-dot"></div>
-      <div class="experience-card structured-group-card">
+      <div class="experience-card structured-group-card spot">
         <div class="company-header-block">
           <div class="company-logo-frame">${getLogoMarkup(item.monogram)}</div>
           <div class="company-header-meta">
@@ -807,6 +840,10 @@ function renderExperience() {
       </div>
     </div>
   `).join('');
+
+  // The entries are rendered after load, so a #company link (e.g. from search) is honoured here
+  const linked = window.location.hash ? document.getElementById(decodeURIComponent(window.location.hash.slice(1))) : null;
+  if (linked && container.contains(linked)) linked.scrollIntoView({ block: "start" });
 }
 
 // --------------------------------------------------------------------------
@@ -815,7 +852,7 @@ function renderExperience() {
 function educationCard(item, sub) {
   const cover = pickCover(item);
   return `
-    <article class="interactive-card edu-card reveal" tabindex="0" role="button" data-modal-type="education" data-sub-type="${sub}" data-id="${item.id}">
+    <article class="interactive-card edu-card reveal" tabindex="0" role="button" data-modal-type="education" data-sub-type="${sub}" data-id="${item.id}"${previewAttr(item)}>
       ${cover ? `<div class="card-cover edu-cover"><img src="${thumbPath(cover)}" alt="" loading="lazy"></div>` : ""}
       <div class="edu-card-content">
         <div class="monogram-avatar">${getLogoMarkup(item.monogram)}</div>
@@ -846,8 +883,8 @@ function projectCard(proj, sub, asLink) {
   const cover = pickCover(proj);
   const hasVideo = (proj.images || []).some(isVideo);
   const open = asLink
-    ? `<a class="interactive-card project-card reveal" href="projectssplit.html#${proj.id}">`
-    : `<article class="interactive-card project-card reveal" tabindex="0" role="button" data-modal-type="projects" data-sub-type="${sub}" data-id="${proj.id}">`;
+    ? `<a class="interactive-card project-card reveal" href="projectssplit.html#${proj.id}"${previewAttr(proj)}>`
+    : `<article class="interactive-card project-card reveal" tabindex="0" role="button" data-modal-type="projects" data-sub-type="${sub}" data-id="${proj.id}"${previewAttr(proj)}>`;
   return `
     ${open}
       <div class="card-cover">
@@ -873,6 +910,14 @@ function renderProjects() {
     DATA.projects.university.map(proj => projectCard(proj, "university", false)).join('');
   document.getElementById("personal-panel").innerHTML =
     DATA.projects.personal.map(proj => projectCard(proj, "personal", false)).join('');
+
+  // Show how many projects sit behind each tab
+  Object.keys(DATA.projects).forEach(sub => {
+    const tab = document.getElementById(`tab-${sub}`);
+    if (tab && !tab.querySelector(".tab-count")) {
+      tab.insertAdjacentHTML("beforeend", `<span class="tab-count">${DATA.projects[sub].length}</span>`);
+    }
+  });
 }
 
 function renderFeatured() {
@@ -1054,8 +1099,18 @@ function closeModal() {
 // --------------------------------------------------------------------------
 function setupStickyNav() {
   const navbar = document.getElementById("navbar");
-  const update = () => navbar.classList.toggle("scrolled", window.scrollY > 30);
+  const bar = document.createElement("div");
+  bar.className = "scroll-progress";
+  bar.setAttribute("aria-hidden", "true");
+  navbar.appendChild(bar);
+
+  const update = () => {
+    navbar.classList.toggle("scrolled", window.scrollY > 30);
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    bar.style.setProperty("--scroll", max > 40 ? Math.min(1, window.scrollY / max).toFixed(4) : "0");
+  };
   window.addEventListener("scroll", update, { passive: true });
+  window.addEventListener("resize", update);
   update();
 }
 
@@ -1082,33 +1137,77 @@ function startKeywordTicker() {
 
   if (!displayTarget) return;
 
+  const SLIDE_MS = 4000; // time each photo stays up
+  const frame = document.querySelector(".hero-slideshow-container");
+  const bar = document.querySelector(".slide-progress span");
   const pad = n => String(n).padStart(2, "0");
   if (counter && slides.length > 0) counter.innerText = `${pad(1)} / ${pad(slides.length)}`;
 
-  setInterval(() => {
-    // 1. Advance the text data layer index node loop
+  function advance() {
+    // 1. Advance the keyword, decoding the new one into place
     index = (index + 1) % keywords.length;
+    scrambleTo(displayTarget, keywords[index], 450);
 
-    // Fade out text ticker safely
-    displayTarget.style.opacity = 0;
-
-    setTimeout(() => {
-      displayTarget.innerText = keywords[index];
-      displayTarget.style.opacity = 1;
-    }, 200);
-
-    // 2. Synchronize your photo elements slide tracking loops
+    // 2. Keep the photo in step (rolls over safely if there are fewer photos than keywords)
     if (slides.length > 0) {
-      // De-activate the current slide item layer
       slides.forEach(slide => slide.classList.remove("active"));
-
-      // Select the target index slide (safely handling array roll-overs if you have fewer images than text loops)
       const slideIndex = index % slides.length;
       slides[slideIndex].classList.add("active");
       if (counter) counter.innerText = `${pad(slideIndex + 1)} / ${pad(slides.length)}`;
     }
+  }
 
-  }, 3000); // Transitions perfectly every 3 seconds!
+  // One clock drives both the progress bar and the slide change, so hovering can pause it
+  let elapsed = 0, last = performance.now(), paused = false;
+  function tick(now) {
+    const dt = Math.min(now - last, 100);
+    last = now;
+    if (!paused) {
+      elapsed += dt;
+      if (elapsed >= SLIDE_MS) { elapsed = 0; advance(); }
+      if (bar) bar.style.transform = `scaleX(${(elapsed / SLIDE_MS).toFixed(4)})`;
+    }
+    requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+
+  if (frame) {
+    frame.addEventListener("pointerenter", (e) => { if (e.pointerType === "mouse") paused = true; });
+    frame.addEventListener("pointerleave", () => { paused = false; });
+    frame.addEventListener("click", () => { elapsed = 0; advance(); });
+  }
+}
+
+// Decodes text into place, left to right, through random glyphs
+function scrambleTo(el, text, duration = 700) {
+  cancelAnimationFrame(el._scramble);
+  if (REDUCE_MOTION) { el.textContent = text; return; }
+  const glyphs = "ABCDEFGHJKLMNPQRSTUVWXYZ0123456789#/<>+=";
+  const start = performance.now();
+  let frameNo = 0;
+  const step = (now) => {
+    const p = Math.min(1, (now - start) / duration);
+    const settled = Math.floor(p * text.length);
+    if (p >= 1) { el.textContent = text; return; }
+    if (frameNo++ % 2 === 0) {
+      let out = text.slice(0, settled);
+      for (let i = settled; i < text.length; i++) {
+        const ch = text[i];
+        out += /[A-Za-z0-9]/.test(ch) ? glyphs[Math.floor(Math.random() * glyphs.length)] : ch;
+      }
+      el.textContent = out;
+    }
+    el._scramble = requestAnimationFrame(step);
+  };
+  el._scramble = requestAnimationFrame(step);
+}
+
+function setupScramble() {
+  document.querySelectorAll("[data-scramble]").forEach(el => {
+    const text = el.textContent.trim();
+    el.setAttribute("aria-label", text);
+    setTimeout(() => scrambleTo(el, text, 900), 250);
+  });
 }
 
 // --------------------------------------------------------------------------
@@ -1147,6 +1246,457 @@ function setupScrollReveal() {
     });
   }, { rootMargin: "0px 0px -40px 0px" });
   items.forEach(el => observer.observe(el));
+}
+
+// --------------------------------------------------------------------------
+// Cursor effects: lit grid, hero name light, card spotlight + tilt
+// --------------------------------------------------------------------------
+function setupPointerEffects() {
+  if (!FINE_POINTER || REDUCE_MOTION) return;
+
+  const glow = document.createElement("div");
+  glow.className = "grid-glow";
+  glow.setAttribute("aria-hidden", "true");
+  document.body.prepend(glow);
+
+  const heroName = document.querySelector(".hero-left h1");
+  let x = 0, y = 0, target = null, queued = false, litCard = null;
+
+  function apply() {
+    queued = false;
+    glow.style.setProperty("--gx", `${x}px`);
+    glow.style.setProperty("--gy", `${y}px`);
+    glow.classList.add("on");
+
+    if (heroName) {
+      const r = heroName.getBoundingClientRect();
+      heroName.style.setProperty("--hx", `${(x - r.left).toFixed(1)}px`);
+      heroName.style.setProperty("--hy", `${(y - r.top).toFixed(1)}px`);
+    }
+
+    const card = target && target.closest ? target.closest(".interactive-card, .spot") : null;
+    if (litCard && litCard !== card) {
+      litCard.style.removeProperty("--rx");
+      litCard.style.removeProperty("--ry");
+    }
+    if (card) {
+      const r = card.getBoundingClientRect();
+      const px = (x - r.left) / r.width, py = (y - r.top) / r.height;
+      card.style.setProperty("--px", `${(px * 100).toFixed(1)}%`);
+      card.style.setProperty("--py", `${(py * 100).toFixed(1)}%`);
+      if (card.classList.contains("interactive-card")) {
+        card.style.setProperty("--ry", `${((px - 0.5) * 7).toFixed(2)}deg`);
+        card.style.setProperty("--rx", `${((0.5 - py) * 7).toFixed(2)}deg`);
+      }
+    }
+    litCard = card;
+  }
+
+  window.addEventListener("pointermove", (e) => {
+    if (e.pointerType === "touch") return;
+    x = e.clientX; y = e.clientY; target = e.target;
+    if (!queued) { queued = true; requestAnimationFrame(apply); }
+  }, { passive: true });
+
+  document.documentElement.addEventListener("mouseleave", () => glow.classList.remove("on"));
+}
+
+// Cards with a video play it in place of the cover image while hovered
+function setupCardPreviews() {
+  if (!FINE_POINTER || REDUCE_MOTION) return;
+  if (navigator.connection && navigator.connection.saveData) return;
+
+  let active = null, timer = null;
+
+  function stop() {
+    clearTimeout(timer);
+    if (!active) return;
+    const video = active.querySelector(".cover-video");
+    if (video) {
+      video.pause();
+      video.removeAttribute("src");
+      video.load();
+      video.remove();
+    }
+    active = null;
+  }
+
+  document.addEventListener("pointerover", (e) => {
+    const card = e.target.closest ? e.target.closest(".interactive-card[data-preview]") : null;
+    if (card === active) return;
+    stop();
+    if (!card) return;
+    active = card;
+    timer = setTimeout(() => {
+      const cover = card.querySelector(".card-cover");
+      if (!cover) return;
+      const video = document.createElement("video");
+      video.className = "cover-video";
+      video.muted = true;
+      video.loop = true;
+      video.playsInline = true;
+      video.preload = "auto";
+      video.tabIndex = -1;
+      video.setAttribute("aria-hidden", "true");
+      video.src = card.dataset.preview;
+      video.addEventListener("playing", () => video.classList.add("on"), { once: true });
+      cover.appendChild(video);
+      video.play().catch(() => {});
+    }, 220);
+  });
+}
+
+// --------------------------------------------------------------------------
+// Count-up stats, achievements marquee, experience timeline progress
+// --------------------------------------------------------------------------
+function setupCounters() {
+  const counters = document.querySelectorAll(".count[data-to]");
+  if (counters.length === 0 || REDUCE_MOTION || !("IntersectionObserver" in window)) return;
+
+  const format = v => Math.round(v).toLocaleString("en-GB");
+  counters.forEach(el => { el.textContent = format(0); });
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      observer.unobserve(entry.target);
+      const el = entry.target;
+      const to = parseFloat(el.dataset.to);
+      const start = performance.now(), duration = 1400;
+      const step = (now) => {
+        const p = Math.min(1, (now - start) / duration);
+        el.textContent = format(to * (1 - Math.pow(1 - p, 3)));
+        if (p < 1) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+    });
+  }, { threshold: 0.2 });
+  counters.forEach(el => observer.observe(el));
+}
+
+function setupMarquee() {
+  if (REDUCE_MOTION) return; // the badges stay as a wrapped, static list
+  document.querySelectorAll(".marquee").forEach(marquee => {
+    const track = marquee.querySelector(".marquee-track");
+    const list = track && track.firstElementChild;
+    if (!list || list.children.length === 0) return;
+
+    marquee.classList.add("is-live");
+    // Repeat the badges until one run is wider than the screen, then duplicate
+    // the run so the loop point is never visible.
+    const originals = [...list.children];
+    let guard = 0;
+    while (list.scrollWidth < window.innerWidth && guard++ < 6) {
+      originals.forEach(node => {
+        const copy = node.cloneNode(true);
+        copy.setAttribute("aria-hidden", "true");
+        list.appendChild(copy);
+      });
+    }
+    const twin = list.cloneNode(true);
+    twin.setAttribute("aria-hidden", "true");
+    track.appendChild(twin);
+  });
+}
+
+function setupTimelineProgress() {
+  const timeline = document.getElementById("experience-timeline");
+  const fill = document.createElement("div");
+  fill.className = "timeline-progress";
+  fill.setAttribute("aria-hidden", "true");
+  timeline.appendChild(fill);
+  const items = [...timeline.querySelectorAll(".timeline-item")];
+
+  let queued = false;
+  function update() {
+    queued = false;
+    const line = window.innerHeight * 0.62; // the fill follows this point of the viewport
+    const rect = timeline.getBoundingClientRect();
+    const atBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4;
+    const p = atBottom ? 1 : Math.max(0, Math.min(1, (line - rect.top - 12) / (rect.height - 12)));
+    timeline.style.setProperty("--tl", p.toFixed(4));
+    items.forEach(item => {
+      const dot = item.querySelector(".timeline-dot").getBoundingClientRect();
+      item.classList.toggle("passed", atBottom || dot.top + dot.height / 2 <= line);
+    });
+  }
+  const request = () => { if (!queued) { queued = true; requestAnimationFrame(update); } };
+  window.addEventListener("scroll", request, { passive: true });
+  window.addEventListener("resize", request);
+  update();
+}
+
+// --------------------------------------------------------------------------
+// Footer contact block (shared by every page)
+// --------------------------------------------------------------------------
+function renderFooterContact() {
+  const footer = document.querySelector(".footer-content");
+  if (!footer) return;
+
+  footer.insertAdjacentHTML("afterbegin", `
+    <div class="contact-cta">
+      <div>
+        <div class="contact-eyebrow">Contact</div>
+        <h2 class="contact-title">Get in touch<span>.</span></h2>
+        <div class="contact-actions">
+          <a class="contact-primary" href="mailto:${CONTACT.email}">${CONTACT.email}</a>
+          <button type="button" id="copy-email">Copy email</button>
+          <a href="${CONTACT.linkedin}" target="_blank" rel="noopener">LinkedIn <span aria-hidden="true">↗</span></a>
+          <a href="${CONTACT.github}" target="_blank" rel="noopener">GitHub <span aria-hidden="true">↗</span></a>
+          <a href="${CONTACT.cv}" download="Aayan_Islam_CV.pdf">CV <span aria-hidden="true">↓</span></a>
+        </div>
+      </div>
+      <div class="contact-side">
+        <strong>${CONTACT.location}</strong>
+        <span id="local-time"></span>
+        <a href="#" id="back-to-top">Back to top <span aria-hidden="true">↑</span></a>
+      </div>
+    </div>`);
+
+  document.getElementById("copy-email").addEventListener("click", copyEmail);
+  document.getElementById("back-to-top").addEventListener("click", (e) => {
+    e.preventDefault();
+    window.scrollTo({ top: 0, behavior: REDUCE_MOTION ? "auto" : "smooth" });
+  });
+
+  // Live local time, so visitors in other time zones know when to expect a reply
+  const clock = document.getElementById("local-time");
+  try {
+    const formatter = new Intl.DateTimeFormat("en-GB", {
+      hour: "2-digit", minute: "2-digit", timeZone: CONTACT.timeZone, timeZoneName: "short"
+    });
+    const showTime = () => { clock.textContent = `${formatter.format(new Date())} local time`; };
+    showTime();
+    setInterval(showTime, 30000);
+  } catch (err) {
+    clock.remove();
+  }
+}
+
+function copyEmail() {
+  const fallback = () => { window.location.href = `mailto:${CONTACT.email}`; };
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(CONTACT.email).then(() => showToast("Email copied to clipboard"), fallback);
+  } else {
+    fallback();
+  }
+}
+
+let toastTimer = null;
+function showToast(message) {
+  let toast = document.getElementById("toast");
+  if (!toast) {
+    toast = document.createElement("div");
+    toast.id = "toast";
+    toast.className = "toast";
+    toast.setAttribute("role", "status");
+    toast.setAttribute("aria-live", "polite");
+    document.body.appendChild(toast);
+  }
+  toast.textContent = message;
+  requestAnimationFrame(() => toast.classList.add("show"));
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toast.classList.remove("show"), 2200);
+}
+
+// --------------------------------------------------------------------------
+// Command palette: Ctrl/Cmd + K or "/" searches pages, projects and links
+// --------------------------------------------------------------------------
+function setupCommandPalette() {
+  const nav = document.querySelector(".nav-container");
+  if (!nav) return;
+
+  const escapeHtml = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const isMac = /Mac|iPhone|iPad/.test(navigator.platform || navigator.userAgent || "");
+  const searchIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>`;
+
+  // What can be searched
+  const items = [
+    { group: "Pages", title: "Home", meta: "Bio, skills and featured projects", href: "index.html", icon: "⌂" },
+    { group: "Pages", title: "Experience", meta: "Work history timeline", href: "experiencesplit.html", icon: "◷" },
+    { group: "Pages", title: "Education", meta: "Degrees and internships", href: "educationsplit.html", icon: "✦" },
+    { group: "Pages", title: "Projects", meta: "University and personal builds", href: "projectssplit.html", icon: "▦" }
+  ];
+  Object.keys(DATA.projects).forEach(sub => DATA.projects[sub].forEach(p => items.push({
+    group: "Projects",
+    title: p.name,
+    meta: `${p.category} · ${p.grade}`,
+    href: `projectssplit.html#${p.id}`,
+    thumb: pickCover(p),
+    keywords: `${p.description} ${p.tags.join(" ")} ${sub}`
+  })));
+  Object.keys(DATA.education).forEach(sub => DATA.education[sub].forEach(e => items.push({
+    group: "Education & internships",
+    title: e.title,
+    meta: `${e.institution} · ${e.dates}`,
+    href: `educationsplit.html#${e.id}`,
+    logo: ASSET_LOGOS[e.monogram],
+    keywords: `${(e.tags || []).join(" ")} ${e.grade}`
+  })));
+  DATA.experience.forEach(x => items.push({
+    group: "Experience",
+    title: x.company,
+    meta: `${x.roles[0].title} · ${x.startDate} – ${x.endDate}`,
+    href: `experiencesplit.html#${x.id}`,
+    logo: ASSET_LOGOS[x.monogram],
+    keywords: x.roles.map(r => r.title).join(" ")
+  }));
+  items.push(
+    { group: "Links", title: "Copy email address", meta: CONTACT.email, run: copyEmail, icon: "@" },
+    { group: "Links", title: "Download CV", meta: "PDF", href: CONTACT.cv, download: "Aayan_Islam_CV.pdf", icon: "↓" },
+    { group: "Links", title: "LinkedIn", meta: "linkedin.com/in/aayanislam", href: CONTACT.linkedin, external: true, icon: "↗" },
+    { group: "Links", title: "GitHub", meta: "github.com/iaayan3913", href: CONTACT.github, external: true, icon: "↗" }
+  );
+  items.forEach(it => { it.haystack = `${it.title} ${it.meta} ${it.keywords || ""} ${it.group}`.toLowerCase(); });
+
+  // Trigger button in the nav
+  const trigger = document.createElement("button");
+  trigger.type = "button";
+  trigger.className = "cmdk-trigger";
+  trigger.setAttribute("aria-label", "Search the site");
+  trigger.setAttribute("aria-haspopup", "dialog");
+  trigger.innerHTML = `${searchIcon}<span>Search</span><kbd>${isMac ? "⌘K" : "Ctrl K"}</kbd>`;
+  nav.appendChild(trigger);
+
+  // Dialog
+  const backdrop = document.createElement("div");
+  backdrop.className = "cmdk-backdrop";
+  backdrop.id = "cmdk";
+  backdrop.setAttribute("role", "dialog");
+  backdrop.setAttribute("aria-modal", "true");
+  backdrop.setAttribute("aria-label", "Search the site");
+  backdrop.innerHTML = `
+    <div class="cmdk-panel">
+      <div class="cmdk-input-row">
+        ${searchIcon}
+        <input class="cmdk-input" id="cmdk-input" type="text" placeholder="Search projects, pages and links…" autocomplete="off" spellcheck="false" role="combobox" aria-expanded="true" aria-controls="cmdk-list" aria-autocomplete="list" aria-label="Search">
+        <button type="button" class="cmdk-close" aria-label="Close search"><kbd>Esc</kbd></button>
+      </div>
+      <ul class="cmdk-list" id="cmdk-list" role="listbox" aria-label="Results"></ul>
+      <div class="cmdk-foot"><span><kbd>↑</kbd> <kbd>↓</kbd> to move</span><span><kbd>↵</kbd> to open</span></div>
+    </div>`;
+  document.body.appendChild(backdrop);
+
+  const input = backdrop.querySelector("#cmdk-input");
+  const list = backdrop.querySelector("#cmdk-list");
+  let results = [], selected = 0, isOpen = false, previousFocus = null;
+
+  function thumbMarkup(it) {
+    if (it.thumb) return `<img class="cmdk-thumb" src="${thumbPath(it.thumb)}" alt="" loading="lazy">`;
+    if (it.logo) return `<img class="cmdk-thumb is-logo" src="${it.logo}" alt="" loading="lazy">`;
+    return `<div class="cmdk-thumb" aria-hidden="true">${it.icon || "→"}</div>`;
+  }
+
+  function render() {
+    const tokens = input.value.trim().toLowerCase().split(/\s+/).filter(Boolean);
+    results = items.filter(it => tokens.every(t => it.haystack.includes(t)));
+    selected = 0;
+
+    if (results.length === 0) {
+      list.innerHTML = `<li class="cmdk-empty" role="presentation">Nothing matches “${escapeHtml(input.value.trim())}”.</li>`;
+      input.removeAttribute("aria-activedescendant");
+      return;
+    }
+    let group = null;
+    list.innerHTML = results.map((it, i) => {
+      const heading = it.group !== group ? `<li class="cmdk-group" role="presentation">${escapeHtml(it.group)}</li>` : "";
+      group = it.group;
+      return `${heading}
+        <li class="cmdk-item" role="option" id="cmdk-option-${i}" data-index="${i}" aria-selected="false">
+          ${thumbMarkup(it)}
+          <div class="cmdk-text">
+            <div class="cmdk-title">${escapeHtml(it.title)}</div>
+            <div class="cmdk-meta">${escapeHtml(it.meta)}</div>
+          </div>
+          <kbd class="cmdk-go" aria-hidden="true">↵</kbd>
+        </li>`;
+    }).join("");
+    select(0, false);
+    list.scrollTop = 0;
+  }
+
+  function select(index, scroll = true) {
+    if (results.length === 0) return;
+    selected = (index + results.length) % results.length;
+    list.querySelectorAll(".cmdk-item").forEach(el => {
+      const on = Number(el.dataset.index) === selected;
+      el.setAttribute("aria-selected", on ? "true" : "false");
+      if (on && scroll) el.scrollIntoView({ block: "nearest" });
+    });
+    input.setAttribute("aria-activedescendant", `cmdk-option-${selected}`);
+  }
+
+  function open() {
+    if (isOpen) return;
+    isOpen = true;
+    previousFocus = document.activeElement;
+    input.value = "";
+    render();
+    backdrop.classList.add("active");
+    document.body.style.overflow = "hidden";
+    requestAnimationFrame(() => input.focus({ preventScroll: true }));
+  }
+
+  function close() {
+    if (!isOpen) return;
+    isOpen = false;
+    backdrop.classList.remove("active");
+    const modal = document.getElementById("bubble-modal");
+    if (!(modal && modal.classList.contains("active"))) document.body.style.overflow = "";
+    if (previousFocus && previousFocus.focus) previousFocus.focus({ preventScroll: true });
+  }
+
+  function run(it) {
+    if (!it) return;
+    close();
+    if (it.run) { it.run(); return; }
+    if (it.external) { window.open(it.href, "_blank", "noopener"); return; }
+    if (it.download) {
+      const link = document.createElement("a");
+      link.href = it.href;
+      link.download = it.download;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      return;
+    }
+    window.location.href = it.href;
+  }
+
+  trigger.addEventListener("click", open);
+  input.addEventListener("input", render);
+  backdrop.addEventListener("click", (e) => {
+    if (e.target === backdrop || e.target.closest(".cmdk-close")) { close(); return; }
+    const option = e.target.closest(".cmdk-item");
+    if (option) run(results[Number(option.dataset.index)]);
+  });
+  list.addEventListener("pointermove", (e) => {
+    const option = e.target.closest(".cmdk-item");
+    if (option && Number(option.dataset.index) !== selected) select(Number(option.dataset.index), false);
+  });
+
+  // Capture phase, so an open palette handles keys before the modal underneath it
+  window.addEventListener("keydown", (e) => {
+    if ((e.ctrlKey || e.metaKey) && !e.altKey && e.key.toLowerCase() === "k") {
+      e.preventDefault();
+      if (isOpen) close(); else open();
+      return;
+    }
+    if (!isOpen) {
+      const el = e.target;
+      const typing = el && (el.tagName === "INPUT" || el.tagName === "TEXTAREA" || el.isContentEditable);
+      if (e.key === "/" && !typing && !e.ctrlKey && !e.metaKey && !e.altKey) { e.preventDefault(); open(); }
+      return;
+    }
+    if (e.key === "Escape") close();
+    else if (e.key === "ArrowDown") select(selected + 1);
+    else if (e.key === "ArrowUp") select(selected - 1);
+    else if (e.key === "Enter") run(results[selected]);
+    else if (e.key === "Tab") { /* keep focus in the search field */ }
+    else return;
+    e.preventDefault();
+    e.stopImmediatePropagation();
+  }, true);
 }
 
 // ==========================================================================

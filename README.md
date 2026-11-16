@@ -12,6 +12,8 @@ A multi-page portfolio engineered to showcase academic developments, research mi
 ├── experiencesplit.html    # Timeline of all experiences
 ├── educationsplit.html     # Academics and internships
 ├── projectssplit.html      # All university and personal projects
+├── 404.html                # Shown by GitHub Pages for any missing URL
+├── .nojekyll               # Tells GitHub Pages to serve the files as-is
 ├── stylesplit.css          # CSS file 
 ├── appsplit.js             # Automated dynamic runtime calculations & execution script
 ├── Images/                 # Media repository holding profile photos and clip loops
@@ -22,6 +24,23 @@ A multi-page portfolio engineered to showcase academic developments, research mi
 └── Reports/                # Technical write-ups and PDF academic research reports
 ```
 
+
+## 🚀 Deployment
+
+The site is plain static files, so there is no build step. Every push to `main` runs `.github/workflows/static.yml`, which publishes the repository to GitHub Pages. Work on a branch, then merge into `main` to go live.
+
+All asset paths are relative and case-sensitive on GitHub Pages (`Images/PaperCut1.png` is not `Images/papercut1.png`), so match file names exactly when adding media.
+
+## ✨ Interactions
+
+All of these live in `appsplit.js` and switch themselves off for visitors who prefer reduced motion:
+
+- **Search palette** — `Ctrl/⌘ + K` or `/` searches every page, project, role and link. Projects and roles are read from `DATA`, so new entries appear automatically.
+- **Cursor light** — the grid, the hero name and each card light up around the cursor; cards tilt towards it.
+- **Video previews** — a card whose project has an `.mp4` plays it on hover.
+- **Hero slideshow** — progress bar, pauses on hover, click to skip.
+- **Count-up stats, achievements marquee, scroll-filled experience timeline, page cross-fades.**
+- **Footer contact block** — rendered on every page from the `CONTACT` object at the top of the rendering section.
 
 ## 🎨 Aesthetic System Architecture
 

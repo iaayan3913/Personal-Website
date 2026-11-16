@@ -50,7 +50,7 @@
     <div class="hero-grid">
       <div class="hero-left">
         <h1>Aayan Islam</h1>
-        <div class="subtitle">Software & Robotics Engineer · MEng Robotics & AI @ UCL</div>
+        <div class="subtitle" data-scramble>Software & Robotics Engineer · MEng Robotics & AI @ UCL</div>
         <!-- Technical paragraph-->
         <p class="bio">I bridge the gap between AI and physical systems. As a Robotics & AI student at UCL (79% average), I have taken part in building autonomous pipelines—from training Vision-Language-Action (VLA) models for robotic manipulation to engineering real-time control algorithms and physics simulations. Backed by industry experience in teleoperation, nuclear robotics, and AI trust research, I build intelligent systems engineered for the physical world.</p>
         <!-- Non technical paragraph-->
@@ -99,6 +99,7 @@
             <img src="Images/thumbs/LoveLutonMarathon.jpg" alt="Aayan and friends in costume at the Love Luton Marathon" class="hero-slide-img">
           </figure>
         </div>
+        <div class="slide-progress" aria-hidden="true"><span></span></div>
         <div class="hero-caption">
           <div id="ticker-text">ROBOTICS</div>
           <div id="slide-counter" aria-hidden="true"></div>
@@ -115,22 +116,23 @@
       </div>
     </div>
 
+    <!-- Headline numbers; .count values animate up from zero (see setupCounters in appsplit.js) -->
     <div class="stats-container">
-      <div class="stat-chip">
-        <div class="label">Location</div>
-        <div class="value">📍 Luton, UK</div>
+      <div class="stat-chip spot">
+        <div class="value"><span class="count" data-to="79">79</span><span class="unit">%</span></div>
+        <div class="label">UCL average · MEng Robotics & AI</div>
       </div>
-      <div class="stat-chip">
-        <div class="label">Education</div>
-        <div class="value">🎓 MEng Robotics & AI — UCL</div>
+      <div class="stat-chip spot">
+        <div class="value"><span class="count" data-to="3">3</span><span class="unit">×</span></div>
+        <div class="label">Internships · 2025–26</div>
       </div>
-      <div class="stat-chip">
-        <div class="label">Funding</div>
-        <div class="value">🏆 Zero Gravity — £3,000</div>
+      <div class="stat-chip spot">
+        <div class="value"><span class="unit">£</span><span class="count" data-to="3000">3,000</span></div>
+        <div class="label">Zero Gravity scholarship</div>
       </div>
-      <div class="stat-chip">
-        <div class="label">Industry Track</div>
-        <div class="value">🔬 3× Internships (2025–26)</div>
+      <div class="stat-chip spot">
+        <div class="value"><span class="count" data-to="2">2</span><span class="unit">×</span></div>
+        <div class="label">Hackathon podiums · NVIDIA 2nd, Google 3rd</div>
       </div>
     </div>
   </section>
@@ -138,25 +140,25 @@
   <section class="skills-section">
     <h2 class="section-title">Skills</h2>
     <div class="skills-grid">
-      <div class="skill-group reveal">
+      <div class="skill-group spot reveal">
         <h3>Languages</h3>
         <ul class="skill-list">
           <li>Python</li><li>C</li><li>C++</li><li>C#</li><li>JavaScript</li><li>MATLAB</li>
         </ul>
       </div>
-      <div class="skill-group reveal">
+      <div class="skill-group spot reveal">
         <h3>AI & Machine Learning</h3>
         <ul class="skill-list">
           <li>PyTorch</li><li>Scikit-Learn</li><li>Pandas</li><li>NumPy</li><li>VLA models (ACT, SmolVLA, GR00T)</li><li>LLM APIs (Claude, Gemini)</li><li>Time-series forecasting</li>
         </ul>
       </div>
-      <div class="skill-group reveal">
+      <div class="skill-group spot reveal">
         <h3>Robotics & Control</h3>
         <ul class="skill-list">
           <li>PID & LQR control</li><li>Sensor fusion</li><li>Real-time systems</li><li>Teleoperation</li><li>PyBullet</li><li>Arduino & ESP32</li><li>OpenCV</li>
         </ul>
       </div>
-      <div class="skill-group reveal">
+      <div class="skill-group spot reveal">
         <h3>Engineering & Tools</h3>
         <ul class="skill-list">
           <li>Fusion 360 / CAD</li><li>3D printing & laser cutting</li><li>FastAPI</li><li>Unity</li><li>Git & GitHub</li>
@@ -174,22 +176,30 @@
       <!-- Generated dynamically -->
     </div>
   </section>
+
+  <!-- Achievements scroll past as a marquee (see setupMarquee in appsplit.js); add or remove <li> items freely -->
+  <div class="achievements-band">
+    <h2 class="badge-strip-title">Achievements & Awards</h2>
+    <div class="marquee">
+      <div class="marquee-track">
+        <ul class="badge-strip">
+          <li class="badge-item">🥈 NVIDIA Hack for Impact - 2nd place</li>
+          <li class="badge-item">🥉 Google Student AI Hackathon - 3rd place</li>
+          <li class="badge-item">🏅 Zero Gravity Scholar — £3,000</li>
+          <li class="badge-item">💻 Top 5% A-Level Computer Science (2024)</li>
+          <li class="badge-item">🎮 Tank Assault — 70/70</li>
+          <li class="badge-item">🥈 UKMT Silver Award</li>
+          <li class="badge-item">🎖️ Duke of Edinburgh Silver Award</li>
+          <li class="badge-item">📜 National Citizen Service Certificate</li>
+          <li class="badge-item">🏫 Senior Prefect</li>
+        </ul>
+      </div>
+    </div>
+  </div>
   </main>
 
   <footer>
     <div class="footer-content">
-      <div class="badge-strip-title">Surfaced Achievements & Badges</div>
-      <div class="badge-strip">
-        <span class="badge-item">🏅 Zero Gravity Scholar — £3,000</span>
-        <span class="badge-item">🥈 UKMT Silver Award</span>
-        <span class="badge-item">🎖️ Duke of Edinburgh Silver Award</span>
-        <span class="badge-item">📜 National Citizen Service Certificate</span>
-        <span class="badge-item">🏫 Senior Prefect</span>
-        <span class="badge-item">💻 Top 5% A-Level Computer Science (2024)</span>
-        <span class="badge-item">🎮 Tank Assault — 70/70</span>
-        <span class="badge-item">🥉 Google Student AI Hackathon - 3rd place</span>
-        <span class="badge-item">🥈 NVIDIA Hack for Impact - 2nd place</span>
-      </div>
       <div class="copyright">
         &copy; 2026 Aayan Islam.
       </div>
